@@ -470,7 +470,6 @@ fetch(GAS_URL)
     members.forEach((m, i) => {
       const card = document.createElement('div');
       card.className = 'member-card';
-      card.style.transitionDelay = `${(i % 4) * 0.08}s`;
       card.onclick = () => openModal(m);
       card.innerHTML = `
         <div class="avatar-wrap">
@@ -483,7 +482,14 @@ fetch(GAS_URL)
         <p class="member-job">${m.job}</p>
       `;
       grid.appendChild(card);
-      revealObserver.observe(card);
+
+      // 初期表示で画面内に見えているものはフェードインを待たずに即表示
+      if (card.getBoundingClientRect().top < window.innerHeight) {
+        card.classList.add('in-view');
+      } else {
+        card.style.transitionDelay = `${(i % 4) * 0.08}s`;
+        revealObserver.observe(card);
+      }
     });
   })
   .catch(() => {
