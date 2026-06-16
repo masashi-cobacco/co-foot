@@ -82,12 +82,29 @@
     color: var(--gold);
   }
 
-  .header-sub {
-    margin-top: 16px;
-    font-size: 14px;
-    letter-spacing: 2px;
-    color: rgba(255,255,255,0.6);
+  .header-members {
+    margin-top: 12px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 8px;
+    color: rgba(255,255,255,0.5);
   }
+
+  .header-sub {
+    margin-top: 12px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .header-link {
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(232,200,74,0.4);
+    padding-bottom: 1px;
+    transition: border-color 0.2s;
+  }
+  .header-link:hover { border-color: var(--gold); }
 
   .divider {
     width: 60px;
@@ -335,7 +352,8 @@
 <header class="header">
   <p class="header-eyebrow">SHIZUOKA BUSINESS FUTSAL COMMUNITY</p>
   <h1>CO-<span>FOOT</span></h1>
-  <p class="header-sub">since 2026</p>
+  <p class="header-members">MEMBERS</p>
+  <p class="header-sub"><a href="https://cobacco.jp/co-foot/" target="_blank" rel="noopener" class="header-link">公式サイトはこちら</a></p>
   <div class="divider"></div>
 </header>
 
