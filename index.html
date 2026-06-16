@@ -483,9 +483,11 @@ fetch(GAS_URL)
       `;
       grid.appendChild(card);
 
-      // 初期表示で画面内に見えているものはフェードインを待たずに即表示
+      // 初期表示で画面内に見えているものはフェードインを完全にスキップして即表示
       if (card.getBoundingClientRect().top < window.innerHeight) {
+        card.style.transition = 'none';
         card.classList.add('in-view');
+        requestAnimationFrame(() => { card.style.transition = ''; }); // hover等のアニメは維持
       } else {
         card.style.transitionDelay = `${(i % 4) * 0.08}s`;
         revealObserver.observe(card);
