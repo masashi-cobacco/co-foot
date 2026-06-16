@@ -383,12 +383,16 @@
         <span class="info-value" id="mPosition"></span>
       </div>
       <div class="info-row">
-        <span class="info-label">カテゴリー</span>
-        <span class="info-value" id="mCategory"></span>
+        <span class="info-label">職業</span>
+        <span class="info-value" id="mJob"></span>
       </div>
       <div class="info-row" id="mLinkRow">
         <span class="info-label">リンク</span>
         <a class="info-link" id="mLink" href="" target="_blank" rel="noopener"></a>
+      </div>
+      <div class="info-row" id="mInstaRow">
+        <span class="info-label">Instagram</span>
+        <a class="info-link" id="mInsta" href="" target="_blank" rel="noopener"></a>
       </div>
     </div>
   </div>
@@ -410,10 +414,10 @@ fetch(GAS_URL)
       name:     r['本名']       || '',
       job:      r['職業']       || '',
       photo:    r['顔写真URL']  || '',
-      company:  r['会社名']     || '',
-      position: r['役職']       || '',
-      category: r['事業カテゴリー'] || '',
-      link:     r['リンク']     || '',
+      company:   r['会社名']     || '',
+      position:  r['役職']       || '',
+      link:      r['リンク']     || '',
+      instagram: r['Instagram']  || '',
     }));
     members.forEach((m, i) => {
       const card = document.createElement('div');
@@ -445,7 +449,7 @@ function openModal(m) {
   document.getElementById('mRole').textContent = m.job;
   document.getElementById('mCompany').textContent = m.company;
   document.getElementById('mPosition').textContent = m.position;
-  document.getElementById('mCategory').textContent = m.category;
+  document.getElementById('mJob').textContent = m.job;
 
   const linkRow = document.getElementById('mLinkRow');
   const link = document.getElementById('mLink');
@@ -455,6 +459,18 @@ function openModal(m) {
     linkRow.style.display = 'flex';
   } else {
     linkRow.style.display = 'none';
+  }
+
+  const instaRow = document.getElementById('mInstaRow');
+  const insta = document.getElementById('mInsta');
+  if (m.instagram) {
+    const raw = String(m.instagram).trim();
+    const handle = raw.replace(/^https?:\/\/(www\.)?instagram\.com\//i, '').replace(/\/$/, '').replace(/^@/, '');
+    insta.href = raw.startsWith('http') ? raw : 'https://instagram.com/' + handle;
+    insta.textContent = '@' + handle;
+    instaRow.style.display = 'flex';
+  } else {
+    instaRow.style.display = 'none';
   }
 
   document.getElementById('overlay').classList.add('active');
