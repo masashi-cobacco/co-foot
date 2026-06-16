@@ -387,7 +387,7 @@
         <span class="info-value" id="mJob"></span>
       </div>
       <div class="info-row" id="mLinkRow">
-        <span class="info-label">リンク</span>
+        <span class="info-label">事業リンク</span>
         <a class="info-link" id="mLink" href="" target="_blank" rel="noopener"></a>
       </div>
       <div class="info-row" id="mInstaRow">
@@ -465,9 +465,8 @@ function openModal(m) {
   const insta = document.getElementById('mInsta');
   if (m.instagram) {
     const raw = String(m.instagram).trim();
-    const handle = raw.replace(/^https?:\/\/(www\.)?instagram\.com\//i, '').replace(/\/$/, '').replace(/^@/, '');
-    insta.href = raw.startsWith('http') ? raw : 'https://instagram.com/' + handle;
-    insta.textContent = '@' + handle;
+    insta.href = raw.startsWith('http') ? raw : 'https://instagram.com/' + raw.replace(/^@/, '');
+    insta.textContent = 'Instagram';
     instaRow.style.display = 'flex';
   } else {
     instaRow.style.display = 'none';
