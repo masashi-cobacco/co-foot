@@ -332,6 +332,28 @@
   }
   .info-link:hover { text-decoration: underline; }
 
+  .modal-instagram {
+    margin-top: 22px;
+    text-align: center;
+  }
+
+  .modal-insta-link {
+    display: inline-block;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-decoration: none;
+    border: 1px solid rgba(232,200,74,0.4);
+    border-radius: 24px;
+    padding: 9px 26px;
+    transition: all 0.2s;
+  }
+  .modal-insta-link:hover {
+    background: rgba(232,200,74,0.12);
+    border-color: var(--gold);
+  }
+
   /* footer */
   .footer {
     position: relative;
@@ -390,10 +412,9 @@
         <span class="info-label">事業リンク</span>
         <a class="info-link" id="mLink" href="" target="_blank" rel="noopener"></a>
       </div>
-      <div class="info-row" id="mInstaRow">
-        <span class="info-label">Instagram</span>
-        <a class="info-link" id="mInsta" href="" target="_blank" rel="noopener"></a>
-      </div>
+    </div>
+    <div class="modal-instagram" id="mInstaRow">
+      <a class="modal-insta-link" id="mInsta" href="" target="_blank" rel="noopener">Instagram</a>
     </div>
   </div>
 </div>
@@ -467,7 +488,7 @@ function openModal(m) {
     const raw = String(m.instagram).trim();
     insta.href = raw.startsWith('http') ? raw : 'https://instagram.com/' + raw.replace(/^@/, '');
     insta.textContent = 'Instagram';
-    instaRow.style.display = 'flex';
+    instaRow.style.display = 'block';
   } else {
     instaRow.style.display = 'none';
   }
