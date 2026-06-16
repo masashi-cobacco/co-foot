@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CO-FOOT — Members</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Bebas+Neue&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green-dark: #1a3d1f;
+    --green-mid: #2d6a35;
+    --green-light: #3d8b46;
+    --white: #ffffff;
+    --gold: #e8c84a;
+    --shadow: rgba(0,0,0,0.6);
+  }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: var(--green-dark);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── 芝生背景 ── */
+  .field {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+      repeating-linear-gradient(
+        180deg,
+        rgba(255,255,255,0.04) 0px,
+        rgba(255,255,255,0.04) 60px,
+        transparent 60px,
+        transparent 120px
+      ),
+      linear-gradient(135deg, #1e4d25 0%, #2a6b33 40%, #1e4d25 60%, #2a6b33 100%);
+  }
+
+  /* フィールドライン */
+  .field::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      /* 縦ライン */
+      linear-gradient(90deg, transparent calc(50% - 1px), rgba(255,255,255,0.12) calc(50% - 1px), rgba(255,255,255,0.12) calc(50% + 1px), transparent calc(50% + 1px)),
+      /* 中央円 */
+      radial-gradient(circle at 50% 50%, transparent 99px, rgba(255,255,255,0.12) 100px, rgba(255,255,255,0.12) 102px, transparent 103px);
+  }
+
+  /* ── ヘッダー ── */
+  .header {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 60px 24px 32px;
+  }
+
+  .header-eyebrow {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 96px);
+    letter-spacing: 4px;
+    line-height: 1;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  }
+
+  .header h1 span {
+    color: var(--gold);
+  }
+
+  .header-sub {
+    margin-top: 16px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .divider {
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    margin: 20px auto 0;
+  }
+
+  /* ── メンバーグリッド ── */
+  .members-section {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  .members-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px 24px;
+  }
+
+  @media (max-width: 900px) {
+    .members-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (max-width: 600px) {
+    .members-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 16px; }
+  }
+
+  /* ── メンバーカード ── */
+  .member-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .member-card:hover { transform: translateY(-6px); }
+  .member-card:hover .avatar-ring { box-shadow: 0 0 0 3px var(--gold), 0 12px 40px rgba(0,0,0,0.5); }
+
+  .avatar-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 160px;
+  }
+
+  .avatar-ring {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid rgba(255,255,255,0.3);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    transition: box-shadow 0.25s ease;
+    background: var(--green-mid);
+  }
+
+  .avatar-ring img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* numberバッジ */
+  .badge {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: #1a1a1a;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+
+  .member-name {
+    margin-top: 14px;
+    font-weight: 700;
+    font-size: 15px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .member-job {
+    margin-top: 4px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── モーダル ── */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .overlay.active { display: flex; }
+
+  .modal {
+    background: linear-gradient(145deg, #1e3d24, #0f2614);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 40px 36px;
+    max-width: 400px;
+    width: 100%;
+    position: relative;
+    animation: slideUp 0.3s ease;
+    box-shadow: 0 32px 64px rgba(0,0,0,0.6);
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    line-height: 1;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.1); color: white; }
+
+  .modal-avatar {
+    width: 100%;
+    max-height: 220px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 0 auto 20px;
+    border: 2px solid rgba(232,200,74,0.4);
+    box-shadow: 0 0 24px rgba(232,200,74,0.2);
+  }
+  .modal-avatar img { width: 100%; height: 220px; object-fit: cover; display: block; }
+
+  .modal-name {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+
+  .modal-nickname {
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .modal-role {
+    text-align: center;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+
+  .modal-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin-bottom: 20px;
+  }
+
+  .modal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .info-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 13px;
+  }
+
+  .info-label {
+    color: rgba(255,255,255,0.4);
+    min-width: 72px;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+
+  .info-value {
+    color: rgba(255,255,255,0.9);
+    word-break: break-word;
+  }
+
+  .info-link {
+    color: var(--gold);
+    text-decoration: none;
+    word-break: break-all;
+  }
+  .info-link:hover { text-decoration: underline; }
+
+  /* footer */
+  .footer {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 24px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="field"></div>
+
+<!-- ヘッダー -->
+<header class="header">
+  <p class="header-eyebrow">SHIZUOKA BUSINESS FUTSAL COMMUNITY</p>
+  <h1>CO-<span>FOOT</span></h1>
+  <p class="header-sub">since 2026</p>
+  <div class="divider"></div>
+</header>
+
+<!-- メンバーグリッド -->
+<section class="members-section">
+  <div class="members-grid" id="membersGrid"></div>
+</section>
+
+<!-- モーダル -->
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModalBtn()">×</button>
+    <div class="modal-avatar">
+      <img id="mPhoto" src="" alt="">
+    </div>
+    <p class="modal-name" id="mName"></p>
+    <p class="modal-nickname" id="mNickname"></p>
+    <p class="modal-role" id="mRole"></p>
+    <div class="modal-divider"></div>
+    <div class="modal-info">
+      <div class="info-row">
+        <span class="info-label">会社名</span>
+        <span class="info-value" id="mCompany"></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">役職</span>
+        <span class="info-value" id="mPosition"></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">カテゴリー</span>
+        <span class="info-value" id="mCategory"></span>
+      </div>
+      <div class="info-row" id="mLinkRow">
+        <span class="info-label">リンク</span>
+        <a class="info-link" id="mLink" href="" target="_blank" rel="noopener"></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">© CO-FOOT — SHIZUOKA BUSINESS FUTSAL COMMUNITY</footer>
+
+<script>
+// ── Google Apps Script からデータを取得 ──
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbzMKRQ0iYcci16LGr8oFBm90sWppb6TkuN6uSdpOVepP1IZwJ6f2Sn5FH4UExsATs8k/exec';
+
+const grid = document.getElementById('membersGrid');
+
+fetch(GAS_URL)
+  .then(r => r.json())
+  .then(rows => {
+    const members = rows.map(r => ({
+      nickname: r['ニックネーム'] || '',
+      name:     r['本名']       || '',
+      job:      r['職業']       || '',
+      photo:    r['顔写真URL']  || '',
+      company:  r['会社名']     || '',
+      position: r['役職']       || '',
+      category: r['事業カテゴリー'] || '',
+      link:     r['リンク']     || '',
+    }));
+    members.forEach((m, i) => {
+      const card = document.createElement('div');
+      card.className = 'member-card';
+      card.onclick = () => openModal(m);
+      card.innerHTML = `
+        <div class="avatar-wrap">
+          <div class="avatar-ring">
+            <img src="${m.photo}" alt="${m.nickname}" loading="lazy">
+          </div>
+          <div class="badge">${i + 1}</div>
+        </div>
+        <p class="member-name">${m.nickname}</p>
+        <p class="member-job">${m.job}</p>
+      `;
+      grid.appendChild(card);
+    });
+  })
+  .catch(() => {
+    grid.innerHTML = '<p style="color:rgba(255,255,255,0.4);text-align:center;grid-column:1/-1;">メンバーデータを読み込めませんでした。</p>';
+  });
+
+// モーダル
+function openModal(m) {
+  document.getElementById('mPhoto').src = m.photo;
+  document.getElementById('mPhoto').alt = m.nickname;
+  document.getElementById('mName').textContent = m.name;        // 本名
+  document.getElementById('mNickname').textContent = m.nickname; // ニックネーム
+  document.getElementById('mRole').textContent = m.job;
+  document.getElementById('mCompany').textContent = m.company;
+  document.getElementById('mPosition').textContent = m.position;
+  document.getElementById('mCategory').textContent = m.category;
+
+  const linkRow = document.getElementById('mLinkRow');
+  const link = document.getElementById('mLink');
+  if (m.link) {
+    link.href = m.link;
+    link.textContent = m.link;
+    linkRow.style.display = 'flex';
+  } else {
+    linkRow.style.display = 'none';
+  }
+
+  document.getElementById('overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('overlay')) closeModalBtn();
+}
+
+function closeModalBtn() {
+  document.getElementById('overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModalBtn();
+});
+</script>
+</body>
+</html>
