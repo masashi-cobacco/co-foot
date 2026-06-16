@@ -181,6 +181,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center top;
     display: block;
   }
 
@@ -272,14 +273,25 @@
 
   .modal-avatar {
     width: 100%;
-    max-height: 220px;
+    max-height: 420px;
     border-radius: 12px;
     overflow: hidden;
     margin: 0 auto 20px;
     border: 2px solid rgba(232,200,74,0.4);
     box-shadow: 0 0 24px rgba(232,200,74,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.15);
   }
-  .modal-avatar img { width: 100%; height: 220px; object-fit: cover; display: block; }
+  .modal-avatar img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 420px;
+    object-fit: contain;
+    display: block;
+  }
 
   .modal-name {
     text-align: center;
