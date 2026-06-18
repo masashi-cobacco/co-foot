@@ -12,6 +12,10 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CO-FOOT — Members">
 <meta name="twitter:description" content="静岡市周辺コワーキングスペース運営・会員さん・興味がある事業者さんが対象の、フットサルを通じて「ゆるく繋がる」コミュニティです。">
+<link rel="preconnect" href="https://script.google.com">
+<link rel="preconnect" href="https://script.googleusercontent.com">
+<link rel="preconnect" href="https://drive.google.com">
+<link rel="dns-prefetch" href="https://lh3.googleusercontent.com">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Bebas+Neue&display=swap');
 
@@ -108,11 +112,9 @@
   .header-link {
     color: var(--gold);
     text-decoration: none;
-    border-bottom: 1px solid rgba(232,200,74,0.4);
-    padding-bottom: 1px;
-    transition: border-color 0.2s;
+    transition: opacity 0.2s;
   }
-  .header-link:hover { border-color: var(--gold); }
+  .header-link:hover { opacity: 0.75; }
 
   .divider {
     width: 60px;
@@ -461,6 +463,12 @@ const GAS_URL = 'https://script.google.com/macros/s/AKfycbzMKRQ0iYcci16LGr8oFBm9
 
 const grid = document.getElementById('membersGrid');
 
+// Driveのサムネイルは sz=w1000 で生成されているため、一覧のアイコン用には
+// もっと小さいサイズをリクエストして読み込みを軽くする(モーダルは元のまま)
+function gridThumb(url) {
+  return String(url || '').replace(/sz=w\d+/, 'sz=w300');
+}
+
 fetch(GAS_URL)
   .then(r => r.json())
   .then(rows => {
@@ -500,7 +508,7 @@ fetch(GAS_URL)
         card.innerHTML = `
           <div class="avatar-wrap">
             <div class="avatar-ring">
-              <img src="${m.photo}" alt="${m.nickname}" loading="lazy">
+              <img src="${gridThumb(m.photo)}" alt="${m.nickname}" loading="lazy">
             </div>
             <div class="badge">${i + 1}</div>
           </div>
