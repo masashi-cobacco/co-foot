@@ -131,24 +131,29 @@
   }
 
   .members-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
   }
 
-  @media (max-width: 900px) {
-    .members-grid { grid-template-columns: repeat(3, 1fr); }
+  .member-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 28px;
+    width: 100%;
   }
-
-  @media (max-width: 600px) {
-    .members-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 16px; }
-  }
+  .member-row.offset-up   { transform: translateY(-12px); }
+  .member-row.offset-down { transform: translateY(12px); }
 
   /* ── メンバーカード ── */
   .member-card {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 160px;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     opacity: 0;
@@ -163,7 +168,6 @@
   .avatar-wrap {
     position: relative;
     width: 100%;
-    max-width: 160px;
   }
 
   .avatar-ring {
@@ -217,6 +221,20 @@
     color: rgba(255,255,255,0.55);
     text-align: center;
     letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 900px) {
+    .member-card { width: 130px; }
+    .member-row { gap: 20px; }
+  }
+
+  @media (max-width: 600px) {
+    .members-grid { gap: 26px; }
+    .member-row { gap: 12px; }
+    .member-card { width: 100px; }
+    .member-name { font-size: 12px; margin-top: 10px; }
+    .member-job { font-size: 9px; }
+    .badge { width: 22px; height: 22px; font-size: 11px; }
   }
 
   /* ── モーダル ── */
@@ -467,35 +485,47 @@ fetch(GAS_URL)
       });
     }, { threshold: 0.15 });
 
-    members.forEach((m, i) => {
-      const card = document.createElement('div');
-      card.className = 'member-card';
-      card.onclick = () => openModal(m);
-      card.innerHTML = `
-        <div class="avatar-wrap">
-          <div class="avatar-ring">
-            <img src="${m.photo}" alt="${m.nickname}" loading="lazy">
-          </div>
-          <div class="badge">${i + 1}</div>
-        </div>
-        <p class="member-name">${m.nickname}</p>
-        <p class="member-job">${m.job}</p>
-      `;
-      grid.appendChild(card);
+    // サッカーのフォーメーションのように行ごとの人数をばらつかせる
+    const rowPattern = [3, 2, 3, 2, 1];
+    let i = 0, rowIndex = 0;
+    while (i < members.length) {
+      const count = rowPattern[rowIndex % rowPattern.length];
+      const row = document.createElement('div');
+      row.className = 'member-row' + (rowIndex % 2 === 0 ? ' offset-up' : ' offset-down');
+      grid.appendChild(row);
 
-      // 初期表示で画面内に見えているものはフェードインを完全にスキップして即表示
-      if (card.getBoundingClientRect().top < window.innerHeight) {
-        card.style.transition = 'none';
-        card.classList.add('in-view');
-        requestAnimationFrame(() => { card.style.transition = ''; }); // hover等のアニメは維持
-      } else {
-        card.style.transitionDelay = `${(i % 4) * 0.08}s`;
-        revealObserver.observe(card);
+      for (let c = 0; c < count && i < members.length; c++, i++) {
+        const m = members[i];
+        const card = document.createElement('div');
+        card.className = 'member-card';
+        card.onclick = () => openModal(m);
+        card.innerHTML = `
+          <div class="avatar-wrap">
+            <div class="avatar-ring">
+              <img src="${m.photo}" alt="${m.nickname}" loading="lazy">
+            </div>
+            <div class="badge">${i + 1}</div>
+          </div>
+          <p class="member-name">${m.nickname}</p>
+          <p class="member-job">${m.job}</p>
+        `;
+        row.appendChild(card);
+
+        // 初期表示で画面内に見えているものはフェードインを完全にスキップして即表示
+        if (card.getBoundingClientRect().top < window.innerHeight) {
+          card.style.transition = 'none';
+          card.classList.add('in-view');
+          requestAnimationFrame(() => { card.style.transition = ''; }); // hover等のアニメは維持
+        } else {
+          card.style.transitionDelay = `${(i % 4) * 0.08}s`;
+          revealObserver.observe(card);
+        }
       }
-    });
+      rowIndex++;
+    }
   })
   .catch(() => {
-    grid.innerHTML = '<p style="color:rgba(255,255,255,0.4);text-align:center;grid-column:1/-1;">メンバーデータを読み込めませんでした。</p>';
+    grid.innerHTML = '<p style="color:rgba(255,255,255,0.4);text-align:center;">メンバーデータを読み込めませんでした。</p>';
   });
 
 // モーダル
