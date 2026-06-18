@@ -142,11 +142,9 @@
     justify-content: center;
     align-items: flex-start;
     flex-wrap: wrap;
-    gap: 28px;
+    gap: 56px;
     width: 100%;
   }
-  .member-row.offset-up   { transform: translateY(-12px); }
-  .member-row.offset-down { transform: translateY(12px); }
 
   /* ── メンバーカード ── */
   .member-card {
@@ -491,7 +489,7 @@ fetch(GAS_URL)
     while (i < members.length) {
       const count = rowPattern[rowIndex % rowPattern.length];
       const row = document.createElement('div');
-      row.className = 'member-row' + (rowIndex % 2 === 0 ? ' offset-up' : ' offset-down');
+      row.className = 'member-row';
       grid.appendChild(row);
 
       for (let c = 0; c < count && i < members.length; c++, i++) {
